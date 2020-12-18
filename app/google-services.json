@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "138418565167",
+    "project_id": "laptas-8a619",
+    "storage_bucket": "laptas-8a619.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138418565167:android:d3870e76b96cfb30f996da",
+        "android_client_info": {
+          "package_name": "com.kelompoklaptas.laptas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138418565167-j1i13si0ecgfhhdmgiabip262mllukt4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kelompoklaptas.laptas",
+            "certificate_hash": "9643e981154c0296d7fa09a0c9e43baafbedaf69"
+          }
+        },
+        {
+          "client_id": "138418565167-9svvu44t1be6f47horg4atd799544650.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtR12rEM6K34tb3TXUuSp2kEbN0Vpy1O0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138418565167-9svvu44t1be6f47horg4atd799544650.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
