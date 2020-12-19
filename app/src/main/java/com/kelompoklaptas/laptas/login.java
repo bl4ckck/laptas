@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class login extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE = "laptas";
+    public static final String EXTRA_MESSAGE = "todetail";
     private FirebaseAuth mAuth;
 
     @Override
