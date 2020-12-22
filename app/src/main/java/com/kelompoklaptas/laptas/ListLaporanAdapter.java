@@ -1,5 +1,7 @@
 package com.kelompoklaptas.laptas;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +27,14 @@ public class ListLaporanAdapter extends FirestoreRecyclerAdapter<Laporan, ListLa
      *
      * @param options
      */
-    public ListLaporanAdapter(@NonNull FirestoreRecyclerOptions<Laporan> options) {
+    Context context;
+    public ListLaporanAdapter(@NonNull FirestoreRecyclerOptions<Laporan> options, Context context) {
         super(options);
+        this.context = context;
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ListLaporanAdapter.Holder holder, int position, @NonNull Laporan model) {
+    protected void onBindViewHolder(@NonNull ListLaporanAdapter.Holder holder, int position, @NonNull final Laporan model) {
         String formatDate = String.valueOf(model.getDate().toDate().toLocaleString());
 
         holder.tvJudul.setText(model.getTitle());
@@ -41,6 +45,20 @@ public class ListLaporanAdapter extends FirestoreRecyclerAdapter<Laporan, ListLa
         Picasso.get()
                 .load(model.getImage())
                 .into(holder.imageView);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DetailLaporan.class);
+                intent.putExtra("judul", model.getTitle());
+                intent.putExtra("status", model.getStatus());
+                intent.putExtra("tanggal", model.getDate());
+                intent.putExtra("nama", model.getId_pelapor());
+                intent.putExtra("image", model.getImage());
+                intent.putExtra("berwenang", model.getId_berwenang());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @NonNull
