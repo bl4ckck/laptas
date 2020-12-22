@@ -13,6 +13,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 public class ListLaporanAdapter extends FirestoreRecyclerAdapter<Laporan, ListLaporanAdapter.Holder> {
 
 
@@ -28,9 +30,11 @@ public class ListLaporanAdapter extends FirestoreRecyclerAdapter<Laporan, ListLa
 
     @Override
     protected void onBindViewHolder(@NonNull ListLaporanAdapter.Holder holder, int position, @NonNull Laporan model) {
+        String formatDate = String.valueOf(model.getDate().toDate().toLocaleString());
+
         holder.tvJudul.setText(model.getTitle());
         holder.tvStatus.setText(model.getStatus());
-        holder.tvTanggal.setText(model.getDate());
+        holder.tvTanggal.setText(formatDate);
         holder.tvNama.setText(model.getId_pelapor());
 
         Picasso.get()

@@ -101,8 +101,8 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                   user = FirebaseAuth.getInstance().getCurrentUser();
                   userID = user.getUid();
                   if (userID.equals("Sz8eVlTFM1bu0D97nIwZehvEa5A2")){
-//                      startActivity(new Intent(login.this, dashboard_admin.class));
-                        Toast.makeText(login.this, "akun admin", Toast.LENGTH_LONG).show();
+                      startActivity(new Intent(login.this, dashboard_user.class));
+                      Toast.makeText(login.this, "akun admin", Toast.LENGTH_LONG).show();
                   }
                   else {
                       startActivity(new Intent(login.this, dashboard_user.class));

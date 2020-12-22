@@ -1,10 +1,14 @@
 package com.kelompoklaptas.laptas;
 
+import com.google.firebase.Timestamp;
+
+import java.util.Date;
+
 public class Laporan {
     private String title;
     private String description;
     private String status;
-    private String date;
+    private Timestamp date;
     private String image;
     private String id_berwenang;
     private String id_pelapor;
@@ -13,7 +17,7 @@ public class Laporan {
 
     }
 
-    public Laporan(String title, String description, String status, String date, String image, String id_berwenang, String id_pelapor) {
+    public Laporan(String title, String description, String status, Timestamp date, String image, String id_berwenang, String id_pelapor) {
         this.title = title;
         this.description = description;
         this.status = status;
@@ -47,11 +51,11 @@ public class Laporan {
         this.status = status;
     }
 
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

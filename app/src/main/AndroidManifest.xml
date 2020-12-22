@@ -16,12 +16,16 @@
         <activity android:name=".register" />
         <activity android:name=".LoginAdmin" />
         <activity android:name=".login">
+
+        </activity>
+        <activity android:name=".MakeReports">
+        </activity>
+        <activity android:name=".dashboard_user">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".dashboard_user" />
         <activity android:name=".MainActivity">
 
         </activity>

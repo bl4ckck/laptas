@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.regex.Pattern;
 
-public class register extends AppCompatActivity implements View.OnClickListener{
+public class register extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
     private EditText etUsername, etPassword, etEmail;
     private TextView btLogin;
@@ -51,7 +51,7 @@ public class register extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btSignUp:
                 registerUser();
                 break;
@@ -62,37 +62,32 @@ public class register extends AppCompatActivity implements View.OnClickListener{
 
     }
 
-    private void registerUser(){
+    private void registerUser() {
         final String username = etUsername.getText().toString().trim();
         final String email = etEmail.getText().toString().trim();
         final String password = etPassword.getText().toString().trim();
 
-        if (username.isEmpty()){
+        if (username.isEmpty()) {
             etUsername.setError("username harus di isi");
             etUsername.requestFocus();
             return;
-        }
-        else if (email.isEmpty()){
+        } else if (email.isEmpty()) {
             etEmail.setError("email harus di isi");
             etEmail.requestFocus();
             return;
-        }
-        else if (password.isEmpty()){
+        } else if (password.isEmpty()) {
             etPassword.setError("password harus di isi");
             etPassword.requestFocus();
             return;
-        }
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             etEmail.setError("tolong isi email dengan benar");
             etEmail.requestFocus();
             return;
-        }
-        else if (password.length() < 6){
+        } else if (password.length() < 6) {
             etPassword.setError("minimal panjang password 6 karakter");
             etPassword.requestFocus();
             return;
-        }
-        else {
+        } else {
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -102,13 +97,13 @@ public class register extends AppCompatActivity implements View.OnClickListener{
                                 FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        Toast.makeText(register.this, "akun berhasil registrasi", Toast.LENGTH_LONG).show();
-                                       }
-                                    
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(register.this, "akun berhasil registrasi", Toast.LENGTH_LONG).show();
+                                        }
+
                                     }
                                 });
-                            }else {
+                            } else {
                                 Toast.makeText(register.this, "registrasi gagal gagal", Toast.LENGTH_LONG).show();
                             }
                         }
