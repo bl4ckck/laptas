@@ -45,6 +45,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_welcome" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_list_laporan"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_lapor"
