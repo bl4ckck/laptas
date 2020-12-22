@@ -21,6 +21,7 @@ public class dashboard_user extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getSupportActionBar().hide();
         setContentView(R.layout.activity_dashboard_user);
 
         firebaseFirestore = FirebaseFirestore.getInstance();

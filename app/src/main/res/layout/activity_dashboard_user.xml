@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".dashboard_user">
+    tools:context=".dashboard_user"
+    android:theme="@style/Theme.AppCompat.NoActionBar">
 
     <TextView
         android:id="@+id/tv_welcome"
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:layout_marginTop="28dp"
-        android:text="TextView"
+        android:text="Welcome, User!!"
         android:textColor="#2E3E5C"
         android:textSize="25sp"
         android:textStyle="bold"
@@ -48,6 +49,7 @@
         android:id="@+id/rv_list_laporan"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:padding="28dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_lapor"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:layout_editor_absoluteX="156dp" />

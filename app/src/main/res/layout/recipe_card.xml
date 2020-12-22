@@ -6,19 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <ImageView
         android:id="@+id/iv_profile"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="16dp"
-        android:scaleType="fitCenter"
         android:src="@drawable/ic_android_black_24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:riv_border_width="0dip"
-        app:riv_corner_radius="11dip"
-        app:riv_mutate_background="true"
-        app:riv_oval="true" />
+        app:layout_constraintTop_toTopOf="parent"/>
+<!--    android:scaleType="fitCenter"-->
+<!--        app:riv_border_width="0dip"-->
+<!--        app:riv_corner_radius="11dip"-->
+<!--        app:riv_mutate_background="true"-->
+<!--        app:riv_oval="false"-->
+
 
     <TextView
         android:id="@+id/tv_name_card"
@@ -43,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <ImageView
         android:id="@+id/iv_report"
         android:layout_width="0dp"
         android:layout_height="125dp"
@@ -52,11 +53,11 @@
         android:src="@drawable/ic_android_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_profile"
-        app:riv_border_width="0dip"
-        app:riv_corner_radius="11dip"
-        app:riv_mutate_background="true"
-        app:riv_oval="true" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_profile"/>
+<!--        app:riv_border_width="0dip"-->
+<!--        app:riv_corner_radius="11dip"-->
+<!--        app:riv_mutate_background="true"-->
+<!--        app:riv_oval="true" -->
 
     <TextView
         android:id="@+id/tv_card_title"
