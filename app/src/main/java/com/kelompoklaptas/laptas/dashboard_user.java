@@ -33,7 +33,7 @@ public class dashboard_user extends AppCompatActivity {
         FirestoreRecyclerOptions<Laporan> options = new FirestoreRecyclerOptions.Builder<Laporan>()
                 .setQuery(query1, Laporan.class)
                 .build();
-         adapter = new ListLaporanAdapter(options);
+         adapter = new ListLaporanAdapter(options, this);
 
          mRecyclerView.setHasFixedSize(true);
          mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
