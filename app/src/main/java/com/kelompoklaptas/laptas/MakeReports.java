@@ -1,5 +1,7 @@
 package com.kelompoklaptas.laptas;
 
+package com.example.coba2;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,7 +36,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MakeReports extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView imageView;
     Button _btFoto,_btKirim;
     private StorageReference mStorageRef;
@@ -46,7 +48,7 @@ public class MakeReports extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reporting);
+        setContentView(R.layout.activity_main);
         imageView = findViewById(R.id.image_Foto);
         _btFoto = findViewById(R.id.button_Foto);
         _btKirim = findViewById(R.id.button_Kirim);
@@ -68,7 +70,47 @@ public class MakeReports extends AppCompatActivity implements View.OnClickListen
         return image;
     }
 
-   //onactivityresult
+    //memilih foto --> take photo, choose from gallery, cancel
+    private void selectImage(Context context) {
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Choose your profile picture");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Take Photo")) {
+                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePicture.resolveActivity(getPackageManager()) != null)
+                    {
+                        File photoFile = null;
+                        try {
+                            photoFile = createImageFile();
+                        } catch (IOException ex) {
+                            // Error occurred while creating the File
+                        }
+                        // Continue only if the File was successfully created
+                        if (photoFile != null) {
+                            Uri photoURI = FileProvider.getUriForFile(MainActivity.this,
+                                    "com.kelompoklaptas.laptas",
+                                    photoFile);
+                            takePicture.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                            startActivityForResult(takePicture,0);
+                        }
+                    }
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto, 1);//one can be replaced with any action code
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    //onactivityresult
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         {
@@ -88,20 +130,20 @@ public class MakeReports extends AppCompatActivity implements View.OnClickListen
         mStorageRef = FirebaseStorage.getInstance().getReference();
         StorageReference fotoRef = mStorageRef.child(user.getUid()+"/image/"+user.getUid()+".jpg");
         uploadTask = fotoRef.putFile(file);
-        Toast.makeText(MakeReports.this,"uploading Image",Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this,"uploading Image",Toast.LENGTH_SHORT).show();
 // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
-                Toast.makeText(MakeReports.this,"can't upload Image, "+exception.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,"can't upload Image, "+exception.getMessage(),Toast.LENGTH_LONG).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                 // ...
-                Toast.makeText(MakeReports.this,"Image Uploaded",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,"Image Uploaded",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -109,35 +151,22 @@ public class MakeReports extends AppCompatActivity implements View.OnClickListen
     //on click pada button ambil foto dan kirim
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.button_Foto) {
-            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-            {
+       if (v.getId() == R.id.button_Foto) {
+           if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+           {
 //               requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            }
-            else
-            {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            }
-        }
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED||checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-//                {
-//                    String [] Permisions = { Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-//                    requestPermissions(Permisions,100);
-//                }
-//                else{
-//                    selectImage(MainActivity.this);
-//                }
-//            }
-//            else {
-//                selectImage(MainActivity.this);
-//            }
-//        }
+               Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+               startActivityForResult(cameraIntent, CAMERA_REQUEST);
+           }
+           else
+           {
+               Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+               startActivityForResult(cameraIntent, CAMERA_REQUEST);
+           }
+       }
+
         else if(v.getId()==R.id.button_Kirim){
-            Toast.makeText(MakeReports.this,"Laporan terkirim",Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this,"Laporan terkirim",Toast.LENGTH_LONG).show();
             finish();
         }
 
@@ -157,3 +186,4 @@ public class MakeReports extends AppCompatActivity implements View.OnClickListen
             }
         }
     }}
+
