@@ -1,7 +1,5 @@
 package com.kelompoklaptas.laptas;
 
-package com.example.coba2;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -121,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    //melakukan upload
+    //melakukan upload --> belum kepake
     public void uploadToStorage(Uri file)
     {
         // Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
