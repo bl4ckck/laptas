@@ -50,13 +50,13 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 //        startActivity(intent);
 //    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//
+//    }
 
     @Override
     public void onClick(View v) {
@@ -94,11 +94,15 @@ public class login extends AppCompatActivity implements View.OnClickListener {
             etPassword.requestFocus();
             return;
         }
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-              if (task.isSuccessful()){
-                  user = FirebaseAuth.getInstance().getCurrentUser();
+                if (!task.isSuccessful()){
+                    Toast.makeText(login.this, "failed", Toast.LENGTH_LONG).show();
+
+                }
+                else{
+                    user = FirebaseAuth.getInstance().getCurrentUser();
                   userID = user.getUid();
                   if (userID.equals("Sz8eVlTFM1bu0D97nIwZehvEa5A2")){
                       startActivity(new Intent(login.this, dashboard_user.class));
@@ -107,10 +111,8 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                   else {
                       startActivity(new Intent(login.this, dashboard_user.class));
                   }
+                }
 
-              }else {
-                  Toast.makeText(login.this, "login gagal", Toast.LENGTH_LONG).show();
-              }
             }
         });
     }
