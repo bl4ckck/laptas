@@ -19,8 +19,6 @@ import com.squareup.picasso.Picasso;
 import java.util.Objects;
 
 public class ListLaporanAdapter extends FirestoreRecyclerAdapter<Laporan, ListLaporanAdapter.Holder> {
-
-
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
@@ -36,6 +34,7 @@ public class ListLaporanAdapter extends FirestoreRecyclerAdapter<Laporan, ListLa
     @Override
     protected void onBindViewHolder(@NonNull ListLaporanAdapter.Holder holder, int position, @NonNull final Laporan model) {
         String formatDate = String.valueOf(model.getDate().toDate().toLocaleString());
+        final String idDoc= getSnapshots().getSnapshot(position).getId();
 
         holder.tvJudul.setText(model.getTitle());
         holder.tvStatus.setText(model.getStatus());
@@ -50,12 +49,7 @@ public class ListLaporanAdapter extends FirestoreRecyclerAdapter<Laporan, ListLa
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailLaporan.class);
-                intent.putExtra("judul", model.getTitle());
-                intent.putExtra("status", model.getStatus());
-                intent.putExtra("tanggal", model.getDate());
-                intent.putExtra("nama", model.getId_pelapor());
-                intent.putExtra("image", model.getImage());
-                intent.putExtra("berwenang", model.getId_berwenang());
+                intent.putExtra("id_doc", idDoc);
                 context.startActivity(intent);
             }
         });

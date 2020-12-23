@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
 public class login extends AppCompatActivity implements View.OnClickListener {
-    public static final String EXTRA_MESSAGE = "todetail";
     private FirebaseAuth mAuth;
     private TextView btndaftar;
     private DatabaseReference reference;
@@ -42,13 +41,6 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
     }
-
-//    public void goToDetail(View view) {
-//        Intent intent = new Intent(this, DetailLaporan.class);
-//        String message = "Ar0EzxoBqBXjdvktIvIB";
-//        intent.putExtra(EXTRA_MESSAGE, message);
-//        startActivity(intent);
-//    }
 
     @Override
     public void onStart() {
