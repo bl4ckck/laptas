@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MakeReports">
 
     <TextView
         android:id="@+id/textView"
@@ -35,7 +35,7 @@
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_Foto" />
+        app:layout_constraintTop_toBottomOf="@+id/btnChoose" />
 
     <EditText
         android:id="@+id/text_Judul"
@@ -67,19 +67,19 @@
         app:srcCompat="@drawable/foto" />
 
     <Button
-        android:id="@+id/button_Foto"
+        android:id="@+id/btnChoose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="254dp"
         android:layout_marginEnd="53dp"
-        android:text="Ambil Foto"
+        android:text="Pilih Foto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_Foto" />
 
     <Button
-        android:id="@+id/button_Kirim"
+        android:id="@+id/btnUpload"
         android:layout_width="294dp"
         android:layout_height="55dp"
         android:layout_marginStart="58dp"
@@ -93,4 +93,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_Keterangan" />
+
+<!--    <Button-->
+<!--        android:id="@+id/btnTake"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="94dp"-->
+<!--        android:layout_marginTop="1dp"-->
+<!--        android:layout_marginEnd="56dp"-->
+<!--        android:text="Ambil FOTO"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/btnChoose"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/image_Foto" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -56,6 +56,8 @@ public class register extends AppCompatActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.btSignUp:
                 registerUser();
+                finish();
+                startActivity(new Intent(register.this, dashboard_user.class));
                 break;
             case R.id.btLogin:
                 startActivity(new Intent(register.this, login.class));
@@ -108,33 +110,9 @@ public class register extends AppCompatActivity implements View.OnClickListener 
                                         Toast.LENGTH_SHORT).show();
 
                             }
-
-                            // ...
                         }
                     });
 
-
-
-//            mAuth.createUserWithEmailAndPassword(email, password)
-//                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<AuthResult> task) {
-//                            if (task.isSuccessful()) {
-//                                User user = new User(username, email, password);
-//                                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<Void> task) {
-//                                        if (task.isSuccessful()) {
-//                                            Toast.makeText(register.this, "akun berhasil registrasi", Toast.LENGTH_LONG).show();
-//                                        }
-//
-//                                    }
-//                                });
-//                            } else {
-//                                Toast.makeText(register.this, "registrasi gagal gagal", Toast.LENGTH_LONG).show();
-//                            }
-//                        }
-//                    });
         }
     }
 
