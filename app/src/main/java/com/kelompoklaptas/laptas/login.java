@@ -41,6 +41,16 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         btnLogin.setOnClickListener(this);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
+
+        if(mAuth.getCurrentUser() != null){
+//            if (mAuth.getCurrentUser().getUid().equals("Sz8eVlTFM1bu0D97nIwZehvEa5A2")){
+//                finish();
+//                startActivity(new Intent(getApplicationContext(), dashboard_admin.class));
+//            }
+
+            finish();
+            startActivity(new Intent(getApplicationContext(), dashboard_user.class));
+        }
     }
 
 //    public void goToDetail(View view) {
@@ -105,6 +115,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                       Toast.makeText(login.this, "akun admin", Toast.LENGTH_LONG).show();
                   }
                   else {
+                      finish();
                       startActivity(new Intent(login.this, dashboard_user.class));
                   }
 
