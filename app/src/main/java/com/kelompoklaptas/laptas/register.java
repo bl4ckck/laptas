@@ -10,6 +10,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class register extends AppCompatActivity implements View.OnClickListener 
     private EditText etUsername, etPassword, etEmail;
     private TextView btLogin;
     private Button btSignup;
+    private ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,15 @@ public class register extends AppCompatActivity implements View.OnClickListener 
         btSignup = findViewById(R.id.btSignUp);
         btSignup.setOnClickListener(this);
         btLogin = (TextView) findViewById(R.id.btLogin);
+        btLogin.setOnClickListener(this);
+        back = findViewById(R.id.back);
+        back.setOnClickListener(this);
+
+        if(mAuth.getCurrentUser() != null){
+
+            finish();
+            startActivity(new Intent(getApplicationContext(), dashboard_user.class));
+        }
     }
 
     @Override
@@ -56,11 +67,15 @@ public class register extends AppCompatActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.btSignUp:
                 registerUser();
-                finish();
-                startActivity(new Intent(register.this, dashboard_user.class));
                 break;
             case R.id.btLogin:
+                finish();
                 startActivity(new Intent(register.this, login.class));
+                break;
+            case R.id.back:
+                finish();
+                startActivity(new Intent(register.this, login.class));
+                break;
         }
 
 
@@ -97,17 +112,12 @@ public class register extends AppCompatActivity implements View.OnClickListener 
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-//                                Log.d(TAG, "createUserWithEmail:success");
                                  Toast.makeText(register.this, "sign up failed", Toast.LENGTH_LONG).show();
-//                                FirebaseUser user = mAuth.getCurrentUser();
-//                                updateUI(user);
                             } else {
-                                // If sign in fails, display a message to the user.
-//                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                 userProfile();
                                 Toast.makeText(register.this, "Sign Up Success.",
                                         Toast.LENGTH_SHORT).show();
+
 
                             }
                         }
@@ -124,6 +134,8 @@ public class register extends AppCompatActivity implements View.OnClickListener 
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
+                        finish();
+                        startActivity(new Intent(register.this, dashboard_user.class));
                     }
                 }
             });
