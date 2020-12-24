@@ -41,7 +41,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         btnLogin.setOnClickListener(this);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
-
+        mAuth.signOut();
         if(mAuth.getCurrentUser() != null){
 //            if (mAuth.getCurrentUser().getUid().equals("Sz8eVlTFM1bu0D97nIwZehvEa5A2")){
 //                finish();
