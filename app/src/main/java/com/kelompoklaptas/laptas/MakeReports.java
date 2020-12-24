@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
@@ -33,8 +35,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MakeReports extends AppCompatActivity implements View.OnClickListener {
     private ImageView imageView;
     Button _btFoto,_btKirim;
     private StorageReference mStorageRef;
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         // Continue only if the File was successfully created
                         if (photoFile != null) {
-                            Uri photoURI = FileProvider.getUriForFile(MainActivity.this,
+                            Uri photoURI = FileProvider.getUriForFile(MakeReports.this,
                                     "com.kelompoklaptas.laptas",
                                     photoFile);
                             takePicture.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
@@ -113,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         {
             if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                Bitmap photo = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
                 imageView.setImageBitmap(photo);
             }
         }
@@ -126,45 +129,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         UploadTask uploadTask;
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        assert user != null;
         StorageReference fotoRef = mStorageRef.child(user.getUid()+"/image/"+user.getUid()+".jpg");
         uploadTask = fotoRef.putFile(file);
-        Toast.makeText(MainActivity.this,"uploading Image",Toast.LENGTH_SHORT).show();
+        Toast.makeText(MakeReports.this,"uploading Image",Toast.LENGTH_SHORT).show();
 // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
-                Toast.makeText(MainActivity.this,"can't upload Image, "+exception.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(MakeReports.this,"can't upload Image, "+exception.getMessage(),Toast.LENGTH_LONG).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                 // ...
-                Toast.makeText(MainActivity.this,"Image Uploaded",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MakeReports.this,"Image Uploaded",Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     //on click pada button ambil foto dan kirim
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
        if (v.getId() == R.id.button_Foto) {
-           if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-           {
-//               requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-               Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-               startActivityForResult(cameraIntent, CAMERA_REQUEST);
-           }
-           else
-           {
-               Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-               startActivityForResult(cameraIntent, CAMERA_REQUEST);
-           }
+           Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+           startActivityForResult(cameraIntent, CAMERA_REQUEST);
        }
 
         else if(v.getId()==R.id.button_Kirim){
-            Toast.makeText(MainActivity.this,"Laporan terkirim",Toast.LENGTH_LONG).show();
+            Toast.makeText(MakeReports.this,"Laporan terkirim",Toast.LENGTH_LONG).show();
             finish();
         }
 

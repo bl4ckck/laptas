@@ -17,13 +17,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 
 public class login extends AppCompatActivity implements View.OnClickListener {
-    public static final String EXTRA_MESSAGE = "todetail";
     private FirebaseAuth mAuth;
     private TextView btndaftar;
-    private DatabaseReference reference;
     private FirebaseUser user;
     private String userID;
     private Button btnLogin;
@@ -34,6 +31,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         mAuth = FirebaseAuth.getInstance();
         btndaftar = (TextView) findViewById(R.id.btnDaftar);
         btndaftar.setOnClickListener(this);
@@ -52,13 +50,6 @@ public class login extends AppCompatActivity implements View.OnClickListener {
             startActivity(new Intent(getApplicationContext(), dashboard_user.class));
         }
     }
-
-//    public void goToDetail(View view) {
-//        Intent intent = new Intent(this, DetailLaporan.class);
-//        String message = "Ar0EzxoBqBXjdvktIvIB";
-//        intent.putExtra(EXTRA_MESSAGE, message);
-//        startActivity(intent);
-//    }
 
     @Override
     public void onStart() {
@@ -84,6 +75,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     private void userLogin(){
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
+
         if (email.isEmpty()){
             etEmail.setError("email harus di isi");
             etEmail.requestFocus();
