@@ -11,13 +11,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -27,40 +34,45 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class MakeReports extends AppCompatActivity {
-    private Button btnChoose, btnUpload/*,btnTake*/;
+    private Button btnChoose, btnUpload;
     private ImageView imageView;
+    private EditText etTitle, etDescription;
     private Uri filePath;
     String currentPhotoPath;
     //Firebase
     FirebaseStorage storage;
     StorageReference storageReference;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private final int PICK_IMAGE_REQUEST = 71;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reporting);
+
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         //Initialize Views
         btnChoose = (Button) findViewById(R.id.btnChoose);
         btnUpload = (Button) findViewById(R.id.btnUpload);
-        //btnTake = (Button) findViewById(R.id.btnTake);
         imageView = (ImageView) findViewById(R.id.image_Foto);
+
+        etTitle = findViewById(R.id.text_Judul);
+        etDescription = findViewById(R.id.text_Keterangan);
+
         btnChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseImage();
             }
         });
-//        btnTake.setOnClickListener(new View.OnClickListener(){
-//            public void onClick(View v){
-//                takeImage();
-//            }
-//        });
+
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,43 +86,6 @@ public class MakeReports extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
-
-//    private void takeImage(){
-//        Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//        if (takePicture.resolveActivity(getPackageManager()) != null)
-//        {
-//            File photoFile = null;
-//            try {
-//                photoFile = createImageFile();
-//            } catch (IOException ex) {
-//                // Error occurred while creating the File
-//            }
-//            // Continue only if the File was successfully created
-//            if (photoFile != null) {
-//                Uri photoURI = FileProvider.getUriForFile(MainActivity.this,
-//                        "com.kelompoklaptas.laptas",
-//                        photoFile);
-//                takePicture.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//                startActivityForResult(takePicture,0);
-//            }
-//        }
-//    }
-
-    //buat file untuk foto
-//    private File createImageFile() throws IOException {
-//        // Create an image file name
-//        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
-//        String imageFileName = "JPEG_" + timeStamp + "_";
-//        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES); //getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-//        File image = File.createTempFile(
-//                imageFileName,  /* prefix */
-//                ".jpg",         /* suffix */
-//                storageDir      /* directory */
-//        );
-//        // Save a file: path for use with ACTION_VIEW intents
-//        currentPhotoPath = image.getAbsolutePath();
-//        return image;
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -130,6 +105,37 @@ public class MakeReports extends AppCompatActivity {
         }
     }
 
+    private void storeToDb(String url) {
+        String name = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName();
+        String title = etTitle.getText().toString().trim();
+        String description = etDescription.getText().toString().trim();
+
+        Map<String, Object> laporan = new HashMap<>();
+        laporan.put("date", new Timestamp(new Date()));
+        laporan.put("image", url);
+        laporan.put("status", "Belum Diperbaiki");
+        laporan.put("title", title);
+        laporan.put("description", description);
+        laporan.put("id_pelapor", name);
+        laporan.put("id_berwenang", "Sz8eVlTFM1bu0D97nIwZehvEa5A2");
+
+        DocumentReference laporanRef = db.collection("laporan").document();
+        laporanRef
+                .set(laporan)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("TAG", "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("TAG", "Error writing document", e);
+                    }
+                });
+    }
+
     private void uploadImage() {
 
         if(filePath != null)
@@ -143,8 +149,22 @@ public class MakeReports extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(MakeReports.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    storeToDb(uri.toString());
+
+                                    progressDialog.dismiss();
+                                    Toast.makeText(MakeReports.this, "Data berhasil disimpan!", Toast.LENGTH_SHORT).show();
+
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle any errors
+                                }
+                            });
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

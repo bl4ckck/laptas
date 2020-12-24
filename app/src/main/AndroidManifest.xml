@@ -26,13 +26,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MakeReports">
-
-        </activity>
-        <activity
-            android:name=".dashboard_user">
-
-        </activity>
+        <activity android:name=".MakeReports"
+            android:label="Input Laporan" />
+        <activity android:name=".dashboard_user"
+            android:theme="@style/HomeTheme" />
     </application>
 
 </manifest>

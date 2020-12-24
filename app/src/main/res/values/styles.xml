@@ -7,6 +7,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="HomeTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#1FCC79</item>
+        <item name="colorPrimaryDark">#53B175</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="DetailTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#1FCC79</item>
         <item name="colorPrimaryDark">#53B175</item>

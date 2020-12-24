@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,7 +33,6 @@ public class dashboard_user extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getSupportActionBar().hide();
         setContentView(R.layout.activity_dashboard_user);
 
         String getName = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName();
@@ -69,6 +69,11 @@ public class dashboard_user extends AppCompatActivity {
          mRecyclerView.setHasFixedSize(true);
          mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
          mRecyclerView.setAdapter(adapter);
+    }
+
+    public void goToLapor(View view) {
+        Intent intent = new Intent(this, MakeReports.class);
+        startActivity(intent);
     }
 
     @Override
